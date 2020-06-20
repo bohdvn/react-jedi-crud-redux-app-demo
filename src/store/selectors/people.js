@@ -1,3 +1,3 @@
 export const getAllPeople = state => {
-  return state.people.allPeople;
+    return state.people.allPeople;
 }

@@ -2,26 +2,26 @@ import React, {useEffect, useState} from 'react';
 import Input from "./common/Input";
 import Button from './common/Button';
 
-import {peopleColumns} from "../services/peopleService";
+import {planetsColumns} from "../services/planetsService";
 import {useDispatch} from "react-redux";
-import {addPerson} from '../store/actions/people';
+import {addPlanet} from '../store/actions/planets';
 
-const initialPersonData = peopleColumns.reduce((columns, columnName) => {
+const initialPlanetData = planetsColumns.reduce((columns, columnName) => {
     columns[columnName] = '';
     return columns;
 }, {})
 
-const PeopleForm = ({setPeople, people, history, match}) => {
+const PlanetsForm = ({setPlanets, planets, history, match}) => {
     const [formErrors, setFormErrors] = useState({});
-    const [personData, setPersonData] = useState({...initialPersonData});
+    const [planetData, setPlanetData] = useState({...initialPlanetData});
     const [editMode, setEditMode] = useState(false);
     const dispatch = useDispatch();
 
     useEffect(() => {
-        const personId = match.params.id;
-        if (personId === "new") return;
-        const existingPersonData = people.find(person => person.id === personId)
-        setPersonData(existingPersonData)
+        const planetId = match.params.id;
+        if (planetId === "new") return;
+        const existingPlanetData = planets.find(planet => planet.id === planetId)
+        setPlanetData(existingPlanetData)
         setEditMode(true);
     }, [])
 
@@ -38,44 +38,44 @@ const PeopleForm = ({setPeople, people, history, match}) => {
 
     const onSubmit = (event) => {
         event.preventDefault();
-        const errors = validate(personData);
+        const errors = validate(planetData);
 
         if (Object.keys(errors).length) {
             return;
         }
 
         if (editMode) {
-            const newPeopleList = people.map(person => person.id === personData.id ? personData : person);
-            setPeople(newPeopleList)
+            const newPlanetsList = planets.map(planet => planet.id === planetData.id ? planetData : planet);
+            setPlanets(newPlanetsList)
         } else {
-            dispatch(addPerson(personData));
+            dispatch(addPlanet(planetData));
         }
-        history.push('/people')
+        history.push('/planets')
     }
 
     const handleChange = (event) => {
         const {currentTarget: input} = event;
-        const data = {...personData};
+        const data = {...planetData};
         const errors = {...formErrors};
         if (errors[input.name]) {
             delete errors[input.name];
         }
 
         data[input.name] = input.value;
-        setPersonData(data);
+        setPlanetData(data);
         setFormErrors(errors)
     }
 
     return (
         <form>
-            {peopleColumns.map(peopleColName => (
+            {planetsColumns.map(planetsColName => (
                 <Input
-                    key={peopleColName}
-                    name={peopleColName}
-                    label={peopleColName[0].toUpperCase() + peopleColName.slice(1)}
-                    value={personData[peopleColName]}
-                    type={peopleColName === 'beloved' ? 'checkbox' : 'input'}
-                    error={formErrors[peopleColName]}
+                    key={planetsColName}
+                    name={planetsColName}
+                    label={planetsColName[0].toUpperCase() + planetsColName.slice(1)}
+                    value={planetData[planetsColName]}
+                    type={planetsColName === 'beloved' ? 'checkbox' : 'input'}
+                    error={formErrors[planetsColName]}
                     onChange={event => handleChange(event)}
                 />
             ))}
@@ -89,4 +89,4 @@ const PeopleForm = ({setPeople, people, history, match}) => {
     );
 };
 
-export default PeopleForm;
+export default PlanetsForm;

@@ -1,9 +1,9 @@
 import React from 'react';
 import {Link} from "react-router-dom";
 import Table from '../common/Table'
-import { useSelector, useDispatch } from 'react-redux';
-import { getAllPeople } from '../../store/selectors/people';
-import { deletePerson, changeBelovedStatus } from '../../store/actions/people';
+import {useDispatch, useSelector} from 'react-redux';
+import {getAllPeople} from '../../store/selectors/people';
+import {changeBelovedStatus, deletePerson} from '../../store/actions/people';
 
 const PeoplePage = () => {
     const dispatch = useDispatch();
